@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('apiKey').value = config.apiKey;
             updateAnalyzeButton();
         }
-        
-        if (config && config.selectedModel) {
-            document.getElementById('modelSelect').value = config.selectedModel;
+
+        if (config && config.apiKey) {
+            document.getElementById('apiKey').value = config.apiKey;
+            updateAnalyzeButton();
         }
-        
+
         if (config && config.selectedTeams) {
             selectedTeams = config.selectedTeams;
             updateTeamCheckboxes();
@@ -40,7 +41,6 @@ async function loadConfig() {
 async function saveConfig() {
     const config = {
         apiKey: document.getElementById('apiKey').value,
-        selectedModel: document.getElementById('modelSelect').value,
         selectedTeams: selectedTeams
     };
     localStorage.setItem('aiAnalyticsConfig', JSON.stringify(config));
@@ -67,7 +67,8 @@ const loadingSection = document.getElementById('loadingSection');
 const resultsSection = document.getElementById('resultsSection');
 const insightsGrid = document.getElementById('insightsGrid');
 const dialogOverlay = document.getElementById('dialogOverlay');
-const modelSelect = document.getElementById('modelSelect');
+const resetBtn = document.getElementById('resetBtn');
+const analysisMeta = document.getElementById('analysisMeta');
 
 // Upload zone click
 uploadZone.addEventListener('click', () => {
@@ -103,14 +104,21 @@ fileInput.addEventListener('change', (e) => {
 // API key input
 apiKeyInput.addEventListener('input', updateAnalyzeButton);
 
-// Model select change
-modelSelect.addEventListener('change', () => {
-    saveConfig();
-});
+
+
+// Reset button click
+if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+        resultsSection.classList.remove('active');
+        uploadSection.style.display = 'block';
+        // Optional: clear file input if desired
+        // removeFile(); 
+    });
+}
 
 // Team checkbox change
 document.querySelectorAll('.team-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
+    checkbox.addEventListener('change', function () {
         const team = this.id.replace('Checkbox', '');
         selectedTeams[team] = this.checked;
         saveConfig();
@@ -157,7 +165,7 @@ function displayFileInfo(file) {
 // Read file content
 function readFileContent(file) {
     const reader = new FileReader();
-    
+
     reader.onload = (e) => {
         fileContent = e.target.result;
     };
@@ -187,7 +195,7 @@ function updateAnalyzeButton() {
     const hasFile = uploadedFile !== null;
     const hasApiKey = apiKeyInput.value.trim().length > 0;
     analyzeBtn.disabled = !(hasFile && hasApiKey);
-    
+
     // Save API key to config when it changes
     saveConfig();
 }
@@ -198,11 +206,12 @@ analyzeBtn.addEventListener('click', analyzeData);
 // Analyze data with Gemini API
 async function analyzeData() {
     const apiKey = apiKeyInput.value.trim();
-    const selectedModel = modelSelect.value;
-    
+    // Hardcoded model
+    const selectedModel = 'gemini-2.0-flash';
+
     console.log('API Key length:', apiKey.length);
-    console.log('Selected model:', selectedModel);
-    
+    console.log('Using model:', selectedModel);
+
     if (!apiKey) {
         showDialog('❌', 'API Key Required', 'Please enter your Gemini API key to continue.');
         return;
@@ -273,18 +282,11 @@ Please structure your response as JSON with this format:
   }
 }`;
 
-        // Determine API URL based on selected model
-        let apiUrl;
-        let requestBody;
-        
-        if (selectedModel.startsWith('gemini-1.5')) {
-            apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
-        } else {
-            apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
-        }
-        
+        // Fixed API URL for gemini-2.0-flash
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+
         console.log('API URL (without key):', apiUrl.replace(apiKey, 'HIDDEN'));
-        
+
         requestBody = {
             contents: [{
                 parts: [{
@@ -296,8 +298,10 @@ Please structure your response as JSON with this format:
                 maxOutputTokens: 8192,
             }
         };
-        
+
         console.log('Request body:', JSON.stringify(requestBody, null, 2).substring(0, 200) + '...');
+
+        const startTime = performance.now();
 
         // Call Gemini API
         const response = await fetch(apiUrl, {
@@ -307,6 +311,15 @@ Please structure your response as JSON with this format:
             },
             body: JSON.stringify(requestBody)
         });
+
+        const endTime = performance.now();
+        const duration = ((endTime - startTime) / 1000).toFixed(2);
+
+        console.log(`Analysis took ${duration} seconds`);
+
+        if (analysisMeta) {
+            analysisMeta.textContent = `Analysis done in ${duration} seconds`;
+        }
 
         console.log('Response status:', response.status);
         console.log('Response ok:', response.ok);
@@ -328,9 +341,9 @@ Please structure your response as JSON with this format:
         }
 
         const data = JSON.parse(responseText);
-        
+
         console.log('Parsed API response:', data);
-        
+
         if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
             console.error('Invalid response structure:', data);
             throw new Error('Invalid response from Gemini API');
@@ -338,7 +351,7 @@ Please structure your response as JSON with this format:
 
         const aiResponse = data.candidates[0].content.parts[0].text;
         console.log('AI Response text:', aiResponse);
-        
+
         // Parse the response
         let result;
         try {
@@ -407,11 +420,11 @@ function displayResults(insights) {
     teams.forEach(team => {
         // Skip teams that are not selected
         if (!selectedTeams[team.key]) return;
-        
+
         if (insights[team.key]) {
             console.log(`${team.name} insight:`, insights[team.key]);
             console.log(`Type of insight:`, typeof insights[team.key]);
-            
+
             const card = document.createElement('div');
             card.className = `insight-card ${team.class}`;
             card.innerHTML = `
@@ -419,7 +432,16 @@ function displayResults(insights) {
                     <span>${team.icon}</span>
                     <span>${team.name}</span>
                 </div>
-                <div class="insight-content">${formatInsight(insights[team.key])}</div>
+                <div class="insight-content" id="content-${team.key}">${formatInsight(insights[team.key])}</div>
+                
+                <div class="card-actions">
+                    <button class="action-btn" onclick="shareInsight('${team.key}', '${team.name}')">
+                        <span>✉️</span> Share
+                    </button>
+                    <button class="action-btn" onclick="exportInsight('${team.key}', '${team.name}')">
+                        <span>🖨️</span> Export
+                    </button>
+                </div>
             `;
             insightsGrid.appendChild(card);
         }
@@ -428,16 +450,53 @@ function displayResults(insights) {
     resultsSection.classList.add('active');
 }
 
+// Share insight via mail
+window.shareInsight = function (teamKey, teamName) {
+    const content = document.getElementById(`content-${teamKey}`).innerText;
+    const subject = `AI Analytics Insights - ${teamName}`;
+    const body = `Here are the AI insights for the ${teamName}:\n\n${content}\n\nGenerated by AI Analytics Dashboard`;
+
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
+// Export insight via print
+window.exportInsight = function (teamKey, teamName) {
+    const content = document.getElementById(`content-${teamKey}`).innerHTML;
+    const badge = document.querySelector(`.insight-card.${teamKey} .team-badge`).outerHTML;
+
+    // Create a temporary container for printing
+    const printContainer = document.createElement('div');
+    printContainer.className = 'print-only insight-card';
+    printContainer.innerHTML = `
+        <div style="margin-bottom: 2rem;">
+            <h1>AI Analytics Insights</h1>
+            <p>Report for: ${teamName}</p>
+            <p>Date: ${new Date().toLocaleDateString()}</p>
+        </div>
+        ${badge}
+        <div class="insight-content" style="margin-top: 2rem;">
+            ${content}
+        </div>
+    `;
+
+    document.body.appendChild(printContainer);
+
+    window.print();
+
+    // Clean up
+    document.body.removeChild(printContainer);
+};
+
 // Format insight text
 function formatInsight(data) {
     console.log('Formatting insight:', data);
     console.log('Type:', typeof data);
-    
+
     // Handle null/undefined
     if (!data) return '<p>No insights available</p>';
-    
+
     let text;
-    
+
     // If it's an object, convert to formatted text
     if (typeof data === 'object' && !Array.isArray(data)) {
         console.log('Data is object, converting...');
@@ -449,9 +508,9 @@ function formatInsight(data) {
         // If it's already a string
         text = String(data);
     }
-    
+
     console.log('Text to format:', text);
-    
+
     // Convert markdown-style formatting to HTML
     return text
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -467,18 +526,18 @@ function formatInsight(data) {
 // Convert object to readable text
 function convertObjectToText(obj) {
     let result = '';
-    
+
     for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
             const value = obj[key];
-            
+
             // Format the key as a header
             const formattedKey = key
                 .replace(/_/g, ' ')
                 .replace(/\b\w/g, l => l.toUpperCase());
-            
+
             result += `## ${formattedKey}\n\n`;
-            
+
             if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
                 // Nested object
                 result += convertObjectToText(value) + '\n\n';
@@ -494,7 +553,7 @@ function convertObjectToText(obj) {
             }
         }
     }
-    
+
     return result;
 }
 

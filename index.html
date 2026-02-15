@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Analytics Insights Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -27,27 +31,12 @@
                     </div>
                     <input type="file" id="fileInput" accept=".csv,.json,.xlsx,.xls">
                 </div>
-                
+
                 <div id="fileInfoContainer"></div>
 
                 <div class="api-key-section">
                     <label class="api-key-label" for="apiKey">Gemini API Key</label>
-                    <input 
-                        type="password" 
-                        id="apiKey" 
-                        class="api-key-input" 
-                        placeholder="Enter your Gemini API key..."
-                    >
-                </div>
-
-                <div class="model-selector">
-                    <label class="model-selector-label" for="modelSelect">Gemini Model</label>
-                    <select id="modelSelect" class="model-select">
-                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                        <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                        <option value="gemini-2.0-pro">Gemini 2.0 Pro</option>
-                    </select>
+                    <input type="password" id="apiKey" class="api-key-input" placeholder="Enter your Gemini API key...">
                 </div>
 
                 <div class="team-selection">
@@ -86,7 +75,19 @@
             </div>
 
             <div class="results-section" id="resultsSection">
+                <div class="analysis-header">
+                    <h2 class="results-title">Analysis Results</h2>
+                    <div class="analysis-meta" id="analysisMeta"></div>
+                </div>
+
                 <div class="insights-grid" id="insightsGrid"></div>
+
+                <button class="analyze-btn secondary" id="resetBtn">
+                    <span class="btn-content">
+                        <span>🔄</span>
+                        <span>Analyze More Data</span>
+                    </span>
+                </button>
             </div>
         </div>
 
@@ -101,7 +102,8 @@
             <div class="dialog-icon" id="dialogIcon">⚠️</div>
             <h2 class="dialog-title" id="dialogTitle">Invalid Data</h2>
             <p class="dialog-message" id="dialogMessage">
-                The uploaded file doesn't contain valid analytics data. Please ensure your file includes metrics like page views, sessions, bounce rates, or user engagement data.
+                The uploaded file doesn't contain valid analytics data. Please ensure your file includes metrics like
+                page views, sessions, bounce rates, or user engagement data.
             </p>
             <div class="dialog-actions">
                 <button class="dialog-btn secondary" onclick="closeDialog()">Cancel</button>
@@ -115,4 +117,5 @@
     <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
