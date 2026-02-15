@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analytics Insights Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+            </div>
+            <h1>AI Analytics Insights</h1>
+            <p class="subtitle">Upload your analytics data and get AI-powered insights for your teams</p>
+        </header>
+
+        <div class="main-card">
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-content">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Drop your analytics file here</div>
+                        <div class="upload-hint">or click to browse • CSV, JSON, XLSX supported</div>
+                    </div>
+                    <input type="file" id="fileInput" accept=".csv,.json,.xlsx,.xls">
+                </div>
+                
+                <div id="fileInfoContainer"></div>
+
+                <div class="api-key-section">
+                    <label class="api-key-label" for="apiKey">Gemini API Key</label>
+                    <input 
+                        type="password" 
+                        id="apiKey" 
+                        class="api-key-input" 
+                        placeholder="Enter your Gemini API key..."
+                    >
+                </div>
+
+                <div class="model-selector">
+                    <label class="model-selector-label" for="modelSelect">Gemini Model</label>
+                    <select id="modelSelect" class="model-select">
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                        <option value="gemini-2.0-pro">Gemini 2.0 Pro</option>
+                    </select>
+                </div>
+
+                <div class="team-selection">
+                    <label class="team-selection-label">Select Teams for Analysis</label>
+                    <div class="team-checkboxes">
+                        <div class="team-checkbox-wrapper">
+                            <input type="checkbox" id="productCheckbox" class="team-checkbox" checked>
+                            <label for="productCheckbox" class="team-checkbox-label">🎯 Product Team</label>
+                        </div>
+                        <div class="team-checkbox-wrapper">
+                            <input type="checkbox" id="businessCheckbox" class="team-checkbox" checked>
+                            <label for="businessCheckbox" class="team-checkbox-label">💼 Business Team</label>
+                        </div>
+                        <div class="team-checkbox-wrapper">
+                            <input type="checkbox" id="techCheckbox" class="team-checkbox" checked>
+                            <label for="techCheckbox" class="team-checkbox-label">⚙️ Tech Team</label>
+                        </div>
+                        <div class="team-checkbox-wrapper">
+                            <input type="checkbox" id="marketingCheckbox" class="team-checkbox" checked>
+                            <label for="marketingCheckbox" class="team-checkbox-label">📢 Marketing Team</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="analyze-btn" id="analyzeBtn" disabled>
+                    <span class="btn-content">
+                        <span>✨</span>
+                        <span>Analyze with AI</span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="loading" id="loadingSection">
+                <div class="spinner"></div>
+                <div class="loading-text">Analyzing your data with AI...</div>
+            </div>
+
+            <div class="results-section" id="resultsSection">
+                <div class="insights-grid" id="insightsGrid"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Powered by Google Gemini AI • Built by Prateek Gaur for Kurukshetra University MBA IT Project</p>
+        </footer>
+    </div>
+
+    <!-- Error Dialog -->
+    <div class="dialog-overlay" id="dialogOverlay">
+        <div class="dialog">
+            <div class="dialog-icon" id="dialogIcon">⚠️</div>
+            <h2 class="dialog-title" id="dialogTitle">Invalid Data</h2>
+            <p class="dialog-message" id="dialogMessage">
+                The uploaded file doesn't contain valid analytics data. Please ensure your file includes metrics like page views, sessions, bounce rates, or user engagement data.
+            </p>
+            <div class="dialog-actions">
+                <button class="dialog-btn secondary" onclick="closeDialog()">Cancel</button>
+                <button class="dialog-btn primary" onclick="reuploadFile()">Upload New File</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load scripts -->
+    <script src="default-config.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
