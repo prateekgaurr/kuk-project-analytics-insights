@@ -7,9 +7,14 @@ A powerful, AI-driven web application that transforms raw analytics data into ac
 
 ## 📋 Overview
 
+
 The **AI Analytics Insights Dashboard** is designed to bridge the gap between complex data and decision-making. By leveraging the advanced capabilities of **Google's Gemini AI**, this tool analyzes uploaded analytics data (CSV, JSON, Excel) and generates tailored recommendations for specific organizational departments: **Product**, **Business**, **Tech**, and **Marketing**.
 
 This application runs entirely on the client-side, ensuring ease of deployment and privacy, as your data flows directly from your browser to the AI API without intermediate storage.
+
+> **Developed by:** Prateek Gaur  
+> **Enrollment No.:** 24DEOJULYMBA00088  
+> **Course:** MBA IT 3rd Semester Project
 
 ## ✨ Key Features
 
@@ -25,7 +30,16 @@ This application runs entirely on the client-side, ensuring ease of deployment a
 - **📤 Export & Share**: Easily share results via email or export/print professional reports.
 - **🎨 Modern UI/UX**: A responsive, clean interface with smooth animations and dark mode aesthetics.
 
-## 🚀 Getting Started
+## 🌐 Access the Application
+
+There are two ways to use this application:
+
+1.  **Online (Recommended)**: Visit the live website at  
+    � **[https://ai-analytics-dash-kuk.netlify.app/](https://ai-analytics-dash-kuk.netlify.app/)**
+
+2.  **Local Version**: You can run the application locally on your machine by following the installation steps below.
+
+## �🚀 Getting Started
 
 ### Prerequisites
 
@@ -61,6 +75,22 @@ This application runs entirely on the client-side, ensuring ease of deployment a
 -   **Fonts**: Google Fonts (Inter, JetBrains Mono)
 -   **Icons**: Native UTF-8 Emojis (lightweight and universal)
 
+## Deployment on Netlify
+
+This project is configured for easy deployment on Netlify with environment variable support for the API key.
+
+1.  **Connect to Repository:** Push this code to a GitHub/GitLab/Bitbucket repository and connect it to a new site on Netlify.
+2.  **Configure Build Settings:**
+    *   **Build command:** `node setup-env.js`
+    *   **Publish directory:** `.`
+    *   (These are already configured in `netlify.toml`, so Netlify should auto-detect them).
+3.  **Set Environment Variables:**
+    *   Go to **Site configuration > Environment variables**.
+    *   Add a new variable:
+        *   **Key:** `GEMINI_API_KEY`
+        *   **Value:** `Your_Actual_Gemini_API_Key`
+4.  **Deploy:** Trigger a deployment. The build script will automatically inject your API key into the configuration.
+
 ## 📁 Project Structure
 
 ```
@@ -68,8 +98,7 @@ This application runs entirely on the client-side, ensuring ease of deployment a
 ├── script.js           # Core logic (File handling, API calls, UI updates)
 ├── styles.css          # Application styling and animations
 ├── default-config.js   # Default configuration settings
-├── config.js           # Runtime configuration handling
-└── ai_ana.html         # (Optional) Alternative analysis view
+└── config.js           # Runtime configuration handling
 ```
 
 ## 🔒 Privacy & Security

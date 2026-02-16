@@ -8,7 +8,7 @@
 // Default configuration with API key
 const DEFAULT_CONFIG = {
     // Replace this with your actual Gemini API key
-    apiKey: 'YOUR_DEFAULT_GEMINI_API_KEY_HERE',
+    apiKey: 'test_api_key_123',
     selectedModel: 'gemini-1.5-flash',
     selectedTeams: {
         product: true,
