@@ -869,4 +869,9 @@ footer {
         color: #000 !important;
         border: 1px solid #ccc;
     }
+
+    .print-only .insight-content,
+    .print-only .insight-content * {
+        color: black !important;
+    }
 }
