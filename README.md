@@ -7,9 +7,14 @@ A powerful, AI-driven web application that transforms raw analytics data into ac
 
 ## 📋 Overview
 
+
 The **AI Analytics Insights Dashboard** is designed to bridge the gap between complex data and decision-making. By leveraging the advanced capabilities of **Google's Gemini AI**, this tool analyzes uploaded analytics data (CSV, JSON, Excel) and generates tailored recommendations for specific organizational departments: **Product**, **Business**, **Tech**, and **Marketing**.
 
 This application runs entirely on the client-side, ensuring ease of deployment and privacy, as your data flows directly from your browser to the AI API without intermediate storage.
+
+> **Developed by:** Prateek Gaur  
+> **Enrollment No.:** 24DEOJULYMBA00088  
+> **Course:** MBA IT 3rd Semester Project
 
 ## ✨ Key Features
 
@@ -25,7 +30,16 @@ This application runs entirely on the client-side, ensuring ease of deployment a
 - **📤 Export & Share**: Easily share results via email or export/print professional reports.
 - **🎨 Modern UI/UX**: A responsive, clean interface with smooth animations and dark mode aesthetics.
 
-## 🚀 Getting Started
+## 🌐 Access the Application
+
+There are two ways to use this application:
+
+1.  **Online (Recommended)**: Visit the live website at  
+    � **[https://ai-analytics-dash-kuk.netlify.app/](https://ai-analytics-dash-kuk.netlify.app/)**
+
+2.  **Local Version**: You can run the application locally on your machine by following the installation steps below.
+
+## �🚀 Getting Started
 
 ### Prerequisites
 
@@ -68,8 +82,7 @@ This application runs entirely on the client-side, ensuring ease of deployment a
 ├── script.js           # Core logic (File handling, API calls, UI updates)
 ├── styles.css          # Application styling and animations
 ├── default-config.js   # Default configuration settings
-├── config.js           # Runtime configuration handling
-└── ai_ana.html         # (Optional) Alternative analysis view
+└── config.js           # Runtime configuration handling
 ```
 
 ## 🔒 Privacy & Security
