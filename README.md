@@ -75,6 +75,22 @@ There are two ways to use this application:
 -   **Fonts**: Google Fonts (Inter, JetBrains Mono)
 -   **Icons**: Native UTF-8 Emojis (lightweight and universal)
 
+## Deployment on Netlify
+
+This project is configured for easy deployment on Netlify with environment variable support for the API key.
+
+1.  **Connect to Repository:** Push this code to a GitHub/GitLab/Bitbucket repository and connect it to a new site on Netlify.
+2.  **Configure Build Settings:**
+    *   **Build command:** `node setup-env.js`
+    *   **Publish directory:** `.`
+    *   (These are already configured in `netlify.toml`, so Netlify should auto-detect them).
+3.  **Set Environment Variables:**
+    *   Go to **Site configuration > Environment variables**.
+    *   Add a new variable:
+        *   **Key:** `GEMINI_API_KEY`
+        *   **Value:** `Your_Actual_Gemini_API_Key`
+4.  **Deploy:** Trigger a deployment. The build script will automatically inject your API key into the configuration.
+
 ## 📁 Project Structure
 
 ```
