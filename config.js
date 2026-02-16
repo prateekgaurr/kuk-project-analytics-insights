@@ -23,7 +23,14 @@ const ConfigManager = {
         } catch (error) {
             console.error('Error loading config:', error);
         }
-        return window.DEFAULT_CONFIG || {
+        // Use the default config from window.DEFAULT_CONFIG which may have been updated by setup-env.js
+        if (window.DEFAULT_CONFIG) {
+            console.log('ConfigManager: Using default configuration');
+            return window.DEFAULT_CONFIG;
+        }
+        
+        // Fallback to empty config if DEFAULT_CONFIG is not available
+        return {
             apiKey: '',
             selectedModel: 'gemini-1.5-flash',
             selectedTeams: {
