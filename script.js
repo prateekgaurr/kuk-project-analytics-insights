@@ -11,30 +11,53 @@ let selectedTeams = {
 // Load config on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        // First try to load from localStorage
         const config = await loadConfig();
-        if (config && config.apiKey) {
-            document.getElementById('apiKey').value = config.apiKey;
-            updateAnalyzeButton();
-        }
-
-        if (config && config.apiKey) {
-            document.getElementById('apiKey').value = config.apiKey;
-            updateAnalyzeButton();
-        }
-
-        if (config && config.selectedTeams) {
-            selectedTeams = config.selectedTeams;
-            updateTeamCheckboxes();
+        
+        // Apply config values if they exist
+        if (config) {
+            if (config.apiKey) {
+                document.getElementById('apiKey').value = config.apiKey;
+                updateAnalyzeButton();
+            }
+            
+            if (config.selectedTeams) {
+                selectedTeams = config.selectedTeams;
+                updateTeamCheckboxes();
+            }
         }
     } catch (error) {
-        console.log('No saved config found or error loading config');
+        console.log('Error loading config:', error);
     }
 });
 
-// Load config from localStorage
+// Load config from localStorage or use default config
 async function loadConfig() {
+    // First try to get from localStorage
     const configStr = localStorage.getItem('aiAnalyticsConfig');
-    return configStr ? JSON.parse(configStr) : null;
+    
+    if (configStr) {
+        return JSON.parse(configStr);
+    }
+    
+    // If not in localStorage, use the default config from window.DEFAULT_CONFIG
+    // which is set in default-config.js and may have been updated by setup-env.js
+    if (window.DEFAULT_CONFIG) {
+        console.log('Using default configuration');
+        return window.DEFAULT_CONFIG;
+    }
+    
+    // Fallback to empty config if nothing else is available
+    return {
+        apiKey: '',
+        selectedModel: 'gemini-1.5-flash',
+        selectedTeams: {
+            product: true,
+            business: true,
+            tech: true,
+            marketing: true
+        }
+    };
 }
 
 // Save config to localStorage
