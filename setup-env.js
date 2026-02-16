@@ -31,19 +31,16 @@ try {
     console.log(`Reading configuration file: ${configPath}`);
     let configContent = fs.readFileSync(configPath, 'utf8');
 
-    // Check if placeholder exists
-    if (!configContent.includes(PLACEHOLDER_KEY)) {
-        console.log('Placeholder not found. The file might have been already updated or modified.');
-        process.exit(0);
-    }
-
-    // Replace the placeholder
     console.log('Injecting API key...');
-    const updatedContent = configContent.replace(PLACEHOLDER_KEY, apiKey);
 
-    // Write the file back
-    fs.writeFileSync(configPath, updatedContent, 'utf8');
-    console.log(`Successfully updated ${CONFIG_FILE} with the API key from environment variables.`);
+// Replace apiKey value regardless of current value
+const updatedContent = configContent.replace(
+    /apiKey:\s*['"].*?['"]/,
+    `apiKey: '${apiKey}'`
+);
+
+fs.writeFileSync(configPath, updatedContent, 'utf8');
+console.log(`Successfully updated ${CONFIG_FILE} with the API key from environment variables.`);
 
 } catch (error) {
     console.error('Error processing configuration file:', error);
