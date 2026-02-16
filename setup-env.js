@@ -9,6 +9,12 @@ const ENV_VAR_NAME = 'GEMINI_API_KEY';
 // Paths
 const configPath = path.join(__dirname, CONFIG_FILE);
 
+console.log("All ENV KEYS:");
+console.log(Object.keys(process.env));
+
+console.log("GEMINI_API_KEY value:");
+console.log(process.env.GEMINI_API_KEY);
+
 console.log(`Checking for environment variable: ${ENV_VAR_NAME}`);
 
 // Check if environment variable exists
