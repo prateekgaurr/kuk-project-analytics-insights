@@ -420,11 +420,22 @@ Please structure your response as JSON with this format:
     } catch (error) {
         console.error('Error:', error);
         loadingSection.classList.remove('active');
-        showDialog(
-            '❌',
-            'Analysis Failed',
-            `An error occurred while analyzing your data: ${error.message}. Please check your API key and try again.`
-        );
+        
+        // Check if the error is related to quota exceeded
+        if (error.message && (error.message.includes('quota') || error.message.includes('limit') || error.message.includes('rate'))) {
+            showDialog(
+                '❌',
+                'Quota Exceeded',
+                'Quota is completed. Please enter a new API key, obtain from Google AI Studio.'
+            );
+        } else {
+            showDialog(
+                '❌',
+                'Analysis Failed',
+                `An error occurred while analyzing your data: ${error.message}. Please check your API key and try again.`
+            );
+        }
+        
         uploadSection.style.display = 'block';
     }
 }

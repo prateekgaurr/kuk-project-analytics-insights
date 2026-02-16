@@ -334,6 +334,22 @@ input[type="file"] {
     box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
+.api-key-hint {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.api-key-hint a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.api-key-hint a:hover {
+    text-decoration: underline;
+    color: var(--text);
+}
 
 
 /* Team Selection */
